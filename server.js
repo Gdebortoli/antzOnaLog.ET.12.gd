@@ -68,13 +68,13 @@ const initialOptions = () => {
                     name: 'newDept',
                     message: 'What Department would you like to add?'
                 }
-            ]).then(newDepartment => {
-                connection.promise().query('INSERT INTO department SET ?', newDepartment)
+            ]).then(newDept => {
+                connection.promise().query('INSERT INTO department SET ?', newDept)
                     .then(initialOptions);
             })
         };
         // Leave the application
-        if (initialOptions == "Exit") {
+        if (initialOptions == 'Exit') {
             console.log(`
         +++++++++++++++++++++++++++++++++++++++++++++++
         Goodbye. Please enter cmd+C or Ctrl+C to exit.
@@ -93,14 +93,27 @@ const initialOptions = () => {
         };
         // Update an Employee
         if (initialOptions == "Update an Employee") {
+            const updateEmployee = () => {
+                [
+                    {
+                        type: 'list',
+                        name: 'update',
+                        message: 'Which employee would you like to update?',
+                        choices: employee.first_name,
+                    },
+                    {
+                        type: 'list',
+                        name: 'newRole',
+                        message: "What is the employee's new role?",
+                        choices: roles,
+                    }
+                ]
+            }
             updateEmployee();
         };
     })
 
-};
-
-
-
+}
 // New Functions to initialize the last 3 options 
 const addNewRole = () => {
     const departments = [];
@@ -109,29 +122,29 @@ const addNewRole = () => {
         if (err) throw err;
 
         res.forEach(dep => {
-            let qObj = {
+            let qA = {
                 name: dep.name,
                 value: dep.id
             }
-            departments.push(qObj);
+            departments.push(qA);
         })
     });
     let questions = [
         {
             type: 'input',
             name: 'title',
-            message: 'What is the title of this new role?'
+            message: 'What is the title of this role?'
         },
         {
             type: 'input',
             name: 'salary',
-            message: 'What is the salary of this new role?'
+            message: 'What is the salary of this role?'
         },
         {
             type: 'list',
             name: 'department_id',
             choices: departments,
-            message: 'Which department is this role in?'
+            message: 'Which department does this roll fall under?'
         }
     ];
 
@@ -140,7 +153,7 @@ const addNewRole = () => {
             const query = `INSERT INTO roles SET ?`;
             connection.query(query, [{ title: response.title, salary: response.salary, department_id: response.department_id }], (err, res) => {
                 if (err) throw err;
-                console.log('Successfully inserted' + " " + `${response.title}`);
+                console.log('Successfully inserted ' + `${response.title}`);
                 initialOptions();
             });
         })
@@ -207,11 +220,9 @@ const addEmployee = () => {
                     connection.query(query, [{ first_name: response.first_name, last_name: response.last_name, role_id: response.role_id, manager_id: response.manager_id }], (err, res) => {
                         if (err) throw err;
                         console.log('Successfully added ' + `${response.first_name}` + " " + `${response.last_name}`);
-                        initialOptions();
                     });
                 })
         });
 
-        // Update an employee
     });
 }
