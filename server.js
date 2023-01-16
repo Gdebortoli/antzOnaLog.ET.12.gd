@@ -65,14 +65,17 @@ const initialOptions = () => {
             prompt([
                 {
                     type: 'input',
-                    name: 'newDept',
+                    name: 'dept_name',
                     message: 'What Department would you like to add?'
                 }
             ]).then(newDept => {
-                connection.promise().query('INSERT INTO department SET ?', newDept)
-                    .then(initialOptions);
+                connection
+                .promise().query('INSERT INTO department SET ?', newDept)
+                .then(initialOptions);
+                
             })
         };
+
         // Leave the application
         if (initialOptions == 'Exit') {
             console.log(`
