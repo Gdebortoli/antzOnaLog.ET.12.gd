@@ -57,7 +57,17 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Screenshots
 
-![]()
+All Roles 
+
+![All Roles](./assets/images/rolesSC.png)
+
+All Employees
+
+![All Employees](./assets/images/employeesSC.png)
+
+All Departments 
+
+![All Departments](./assets/images/deptsSC.png)
 
 ## Github Link
 
